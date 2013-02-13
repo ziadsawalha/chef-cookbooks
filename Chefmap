@@ -1,0 +1,40 @@
+# The 'context' for the templating language (see Jinja2 syntax http://jinja.pocoo.org/docs/templates/) will contain...
+# Objects:
+# deployment: which includes inputs, environment, blueprint, and resources
+# component: the current component being evauated
+# resource: the current resource being evaluated
+# clients: hash of clients for each inbound relation (the join filter is useful here http://jinja.pocoo.org/docs/templates/#builtin-filters). Client hash includes ip only (so far).
+# Extended functions (added to normal Jinja functions):
+# setting(name) - used to get a setting as Checkmate sees it
+# parse_url(url) returns a url_parse result as scheme://netloc/path;parameters?query#fragment (may also include username, password, hostname, port)
+# hash(string) returns an MD5 hash as expected by chef for values like passwords
+
+# We can now remove this from the provider!
+
+--- # component definition
+id: openstack
+is: application
+provides:
+- application: http
+requires:
+- host: linux
+options:
+  "server_root_password":
+    type: password
+    default: =generate_password()
+    required: true
+  "database_name":
+    required: true
+    default: app_db
+  "username":
+    required: true
+    default: root
+  "password":
+    type: password
+    default: =generate_password()
+    required: true
+# Here are the provider settings and maps for this component
+run-list:
+  roles:
+  - allinone
+

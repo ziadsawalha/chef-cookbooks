@@ -1,0 +1,18 @@
+blueprint:
+  id: 87d8f440760611e2bcfd0800200c9a66
+  name: Rackspace OpenStack - Alamo
+  services:
+    stack:
+      component:
+        name: openstack
+environment:
+  description: This environment uses next-gen cloud servers.
+  name: Next-Gen Open Cloud
+  providers:
+    chef-solo:
+      vendor: opscode
+      constraints:
+      - source: %repo_url%
+    nova: {}
+    common:
+      vendor: rackspace
